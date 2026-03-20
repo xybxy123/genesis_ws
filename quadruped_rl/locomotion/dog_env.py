@@ -101,6 +101,29 @@ class DogEnv:
             ),
         )
 
+        # 获取IMU安装的link
+        self.imu_link = self.robot.get_link("flat_cube")
+
+        # 添加Genesis原生IMU传感器
+        self.imu_sensor = self.scene.add_sensor(
+            gs.sensors.IMU(
+                entity_idx=self.robot.idx,
+                link_idx_local=self.imu_link.idx_local,
+                pos_offset=(0.0, 0.0, 0.0),
+                euler_offset=(0.0, 0.0, 0.0),
+                acc_cross_axis_coupling=(0.0, 0.01, 0.02),
+                gyro_cross_axis_coupling=(0.03, 0.04, 0.05),
+                acc_noise=(0.01, 0.01, 0.01),
+                gyro_noise=(0.01, 0.01, 0.01),
+                acc_random_walk=(0.001, 0.001, 0.001),
+                gyro_random_walk=(0.001, 0.001, 0.001),
+                delay=self.dt,  # 确保和self.dt对齐
+                jitter=0.001,
+                interpolate=True,
+                draw_debug=True,
+            )
+        )
+
         self.scene.build(n_envs=num_envs)
 
         # 关节索引处理
@@ -166,11 +189,21 @@ class DogEnv:
         self.episode_length_buf += 1
 
         # 获取状态
+        # 1. 真实位姿：从物理引擎计算出真实位置、四元数和线速度（世界坐标系转局部系）
+        self.base_pos = self.robot.get_pos()
         self.base_quat = self.robot.get_quat()
         inv_base_quat = inv_quat(self.base_quat)
         self.base_lin_vel = transform_by_quat(self.robot.get_vel(), inv_base_quat)
-        self.base_ang_vel = transform_by_quat(self.robot.get_ang(), inv_base_quat)
+
+        # 2. 从 IMU 获取数据（模拟现实传感器）
+        imu_data = self.imu_sensor.read()
+        # IMU通常输出基于自身局部坐标系的角速度和线加速度，直接作为状态输入
+        self.base_ang_vel = imu_data.ang_vel
+        self.base_lin_acc = imu_data.lin_acc
+
+        # 3. 投影重力，解算自身相对地面的倾角(RPY的一种等效表达)
         self.projected_gravity = transform_by_quat(self.global_gravity, inv_base_quat)
+
         self.dof_pos = self.robot.get_dofs_position(self.motor_dofs)
         self.dof_vel = self.robot.get_dofs_velocity(self.motor_dofs)
 
@@ -180,9 +213,24 @@ class DogEnv:
             rew = func() * self.reward_scales[name] * self.dt
             self.rew_buf += rew
 
+        # 打印实时解算的位姿以便观察
+        # 考虑到刚开始训练时机器人很快就跌倒(通常活不到200步)，我们在每回合的第1步或每第10步打印一次
+        if self.episode_length_buf[0] == 1 or self.episode_length_buf[0] % 10 == 0:
+            current_rpy = quat_to_xyz(self.base_quat[0], rpy=True, degrees=True)
+            print(
+                f"[{self.episode_length_buf[0]}/{self.max_episode_length}] "
+                f"Pos (x,y,z): {self.base_pos[0].cpu().numpy().round(3)}, "
+                f"RPY (deg): {current_rpy.cpu().numpy().round(3)}\n"
+                f"    IMU Omega: {self.base_ang_vel[0].cpu().numpy().round(3)}, "
+                f"IMU Acc: {self.base_lin_acc[0].cpu().numpy().round(3)}"
+            )
+
         # 终止判定 (掉下地面、翻滚过大或超时)
         self.reset_buf = self.episode_length_buf > self.max_episode_length
+        # 原倾斜严重判定（保留为兜底）：
         self.reset_buf |= torch.abs(self.projected_gravity[:, 2]) < 0.5  # 身体倾斜严重
+        # 新增判定：向左或者向右倾倒超过45度 (sin(45°) ≈ 0.707)
+        self.reset_buf |= torch.abs(self.projected_gravity[:, 1]) > 0.707
 
         self._reset_idx(self.reset_buf)
         self._update_observation()
@@ -198,13 +246,20 @@ class DogEnv:
         )
 
     def _reset_idx(self, envs_idx):
-        if envs_idx.any():
-            # 这里简化处理，重置为初始姿态
-            # 实际训练建议加入随机化（Randomization）
-            self.robot.set_qpos(self.robot.get_qpos()[0], envs_idx=envs_idx)
-            self.episode_length_buf[envs_idx] = 0
-            # 重新采样指令
-            self.commands[envs_idx, 0] = 0.5  # 默认给个前进 0.5m/s 的指令
+        if not envs_idx.any():
+            return
+
+        # 组合初始的状态，包括基座位置、基座姿态和关节默认位置
+        init_qpos = torch.cat(
+            [self.base_init_pos, self.base_init_quat, self.default_dof_pos]
+        )
+
+        # 恢复初始位姿（包含清零速度），这样避免了拷贝跌倒状态
+        self.robot.set_qpos(init_qpos, envs_idx=envs_idx, zero_velocity=True)
+
+        self.episode_length_buf[envs_idx] = 0
+        # 重新采样指令
+        self.commands[envs_idx, 0] = 0.5  # 默认给个前进 0.5m/s 的指令
 
     def _update_observation(self):
         self.obs_buf = torch.cat(
