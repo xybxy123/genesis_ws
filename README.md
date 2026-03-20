@@ -39,3 +39,14 @@ pip install -e .[dev]
 python examples/tutorials/hello_genesis.py
 ```
 
+
+cd ~/w_work/genesis_ws
+git clone https://github.com/leggedrobotics/rsl_rl.git
+cd rsl_rl
+pip install -e .
+
+直接在 scripts/train.py 中调用 rsl_rl 提供的 PPO 算法类即可。
+
+
+
+
