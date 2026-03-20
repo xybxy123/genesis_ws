@@ -4,15 +4,21 @@ import numpy as np
 import time
 
 # --- 1. 获取文件路径 ---
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前脚本目录: test/
+# ✅ 关键修改：向上跳一级到 rc_wl 根目录
+root_dir = os.path.dirname(current_dir)  # rc_wl 根目录
 urdf_relative_path = os.path.join("assets", "urdf", "wheel_leg.urdf")
-urdf_path = os.path.join(current_dir, urdf_relative_path)
+# ✅ 使用根目录拼接 URDF 路径，而非当前脚本目录
+urdf_path = os.path.join(root_dir, urdf_relative_path)
 urdf_file_name = os.path.basename(urdf_path)  # 获取文件名 wheel_leg.urdf
 
 print(f"尝试加载 URDF: {urdf_path}")
 
 if not os.path.exists(urdf_path):
     print(f"❌ 错误: URDF 文件未找到于: {urdf_path}")
+    # 额外提示：帮助排查路径问题
+    print(f"📌 当前脚本目录: {current_dir}")
+    print(f"📌 期望的根目录: {root_dir}")
     exit()
 
 
