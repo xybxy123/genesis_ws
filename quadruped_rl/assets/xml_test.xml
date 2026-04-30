@@ -29,7 +29,7 @@
         <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1" diffuse=".5 .5 .5" specular=".5 .5 .5" />
 
         <!-- 平放长方体 30cm×20cm×4cm -->
-        <body name="flat_cube" pos="0 0 0.52"> 
+        <body name="flat_cube" pos="0 0 0.30"> 
         <freejoint/>
             <geom name="flat_cube_geom" type="box" size="0.14 0.075 0.02" material="flat_cube_mat" mass="0.2" condim="3"/>
 
@@ -43,13 +43,13 @@
             <body name="h_back_right" pos="-0.14 -0.075 -0.08">
                 <joint type="hinge" name="h_back_right" pos="0 0 0.045" axis="0 1 0" 
                        damping="0.1" frictionloss="0.01" stiffness="0" 
-                      range="-1.57 1.57" limited="true" armature="0.02" />
+                      range="-1.57 1.57" limited="true" ref="0.0"  armature="0.02" />
                 <geom name="link1_geom" type="capsule" size="0.015 0.045"  euler="0 0 0" material="link_mat" mass=".1" condim="3"/>
                 
                 <body name="l_back_right" pos="0 0 -0.12315">
                     <joint type="hinge" name="l_back_right" pos="0 0 0.06315" axis="0 1 0" 
                            damping="0.1" frictionloss="0.01" stiffness="0" 
-                          range="-3.1416 0" limited="true" armature="0.02" />
+                          range="-3.1416 0" limited="true" ref="0.0"  armature="0.02" />
                     <geom name="link1_2_geom" type="capsule" size="0.01 0.05315" material="link2_mat" mass=".1" condim="3"/>
                 </body>
             </body>
@@ -57,13 +57,13 @@
             <body name="h_front_right" pos="0.14 -0.075 -0.08">
                 <joint type="hinge" name="h_front_right" pos="0 0 0.045" axis="0 1 0" 
                        damping="0.1" frictionloss="0.01" stiffness="0" 
-                      range="-1.57 1.57" limited="true" armature="0.02" />
+                      range="-1.57 1.57" limited="true" ref="0.0"  armature="0.02" />
                   <geom name="link2_geom" type="capsule" size="0.015 0.045" material="link_mat" mass=".1" condim="3"/>
                 
                 <body name="l_front_right" pos="0 0 -0.12315">
                     <joint type="hinge" name="l_front_right" pos="0 0 0.06315" axis="0 1 0" 
                            damping="0.1" frictionloss="0.01" stiffness="0" 
-                          range="-3.1416 0" limited="true" armature="0.02" />
+                          range="-3.1416 0" limited="true" ref="0.0"  armature="0.02" />
                       <geom name="link2_2_geom" type="capsule" size="0.01 0.05315" material="link2_mat" mass=".1" condim="3"/>
                 </body>
             </body>
@@ -71,13 +71,13 @@
             <body name="h_back_left" pos="-0.14 0.075 -0.08">
                 <joint type="hinge" name="h_back_left" pos="0 0 0.045" axis="0 1 0" 
                        damping="0.1" frictionloss="0.01" stiffness="0" 
-                      range="-1.57 1.57" limited="true" armature="0.02" />
+                      range="-1.57 1.57" limited="true" ref="0.0"  armature="0.02" />
                   <geom name="link3_geom" type="capsule" size="0.015 0.045" material="link_mat" mass=".1" condim="3"/>
                 
                 <body name="l_back_left" pos="0 0 -0.12315">
                     <joint type="hinge" name="l_back_left" pos="0 0 0.06315" axis="0 1 0" 
                            damping="0.1" frictionloss="0.01" stiffness="0" 
-                          range="-3.1416 0" limited="true" armature="0.02" />
+                          range="-3.1416 0" limited="true" ref="0.0"  armature="0.02" />
                       <geom name="link3_2_geom" type="capsule" size="0.01 0.05315" material="link2_mat" mass=".1" condim="3"/>
                 </body>
             </body>
@@ -85,13 +85,13 @@
             <body name="h_front_left" pos="0.14 0.075 -0.08">
                 <joint type="hinge" name="h_front_left" pos="0 0 0.045" axis="0 1 0" 
                        damping="0.1" frictionloss="0.01" stiffness="0" 
-                      range="-1.57 1.57" limited="true" armature="0.02" />
+                      range="-1.57 1.57" limited="true" ref="0.0"  armature="0.02" />
                   <geom name="link4_geom" type="capsule" size="0.015 0.045" material="link_mat" mass=".1" condim="3"/>
                 
                 <body name="l_front_left" pos="0 0 -0.12315">
                     <joint type="hinge" name="l_front_left" pos="0 0 0.06315" axis="0 1 0" 
                            damping="0.1" frictionloss="0.01" stiffness="0" 
-                          range="-3.1416 0" limited="true" armature="0.02" />
+                          range="-3.1416 0" limited="true" ref="0.0"  armature="0.02" />
                       <geom name="link4_2_geom" type="capsule" size="0.01 0.05315" material="link2_mat" mass=".1" condim="3"/>
                 </body>
             </body>

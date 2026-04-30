@@ -26,9 +26,6 @@ class DogEnv:
         # 单个仿真环境的观测向量维度
         self.num_obs = obs_cfg["num_obs"]
 
-        # 特权观测维度(暂时不启用)
-        self.num_privileged_obs = None
-
         # 动作指令维度(控制的关节数量)
         self.num_actions = env_cfg["num_actions"]
 
@@ -129,7 +126,7 @@ class DogEnv:
         # 关节索引处理
         self.motor_dofs = torch.tensor(
             [
-                self.robot.get_joint(name).dof_start
+                self.robot.get_joint(name).dof_start  # dof为自由度
                 for name in self.env_cfg["joint_names"]
             ],
             dtype=gs.tc_int,
@@ -139,8 +136,6 @@ class DogEnv:
         # PD 参数设置
         self.robot.set_dofs_kp([self.env_cfg["kp"]] * self.num_actions, self.motor_dofs)
         self.robot.set_dofs_kv([self.env_cfg["kd"]] * self.num_actions, self.motor_dofs)
-
-        # 缺少初始化奖励函数字典（存储各奖励项的计算函数）和单轮奖励累加字典（存储各奖励项的累计值）
 
         # 初始化各种 Buffer (逻辑同 Go2)
         self._init_buffers()
@@ -165,6 +160,7 @@ class DogEnv:
         self.episode_length_buf = torch.zeros(
             self.num_envs, dtype=torch.long, device=self.device
         )
+
         self.commands = torch.zeros(
             (self.num_envs, self.num_commands), device=self.device
         )
@@ -302,5 +298,5 @@ class DogEnv:
         )
 
     def _reward_base_height(self):
-        # 你的 XML 初始高度约 0.52，目标设为 0.35 比较稳
-        return torch.square(self.robot.get_pos()[:, 2] - 0.35)
+        # 你的 XML 初始高度约 0.30，目标设为 0.22 比较稳
+        return torch.square(self.robot.get_pos()[:, 2] - 0.22)

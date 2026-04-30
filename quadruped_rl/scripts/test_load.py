@@ -22,7 +22,7 @@ def main():
     # 添加地面和机器人实体
     plane = scene.add_entity(morph=gs.morphs.Plane())
     robot = scene.add_entity(
-        morph=gs.morphs.MJCF(file="assets/xml_test.xml"),
+        morph=gs.morphs.MJCF(file="../assets/JQG12/MJCF/JQG12_straight.xml"),
     )
 
     # 获取IMU安装的link（对应XML中的flat_cube body）

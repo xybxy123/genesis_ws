@@ -1,0 +1,143 @@
+<mujoco model="JQG12">
+
+  <default>
+    <joint damping="0.8" armature="0.01" />
+  </default>
+
+  <compiler angle="radian" />
+
+  <asset>
+    <material name="body_material" rgba="0.2 0.2 0.2 1" specular="0" shininess="0" reflectance="0" emission="0" />
+    <mesh name="base_link.STL" file="../meshes/base_link.STL" />
+    <mesh name="l_f_link.STL" file="../meshes/l_f_link.STL" />
+    <mesh name="l_f_1link.STL" file="../meshes/l_f_1link.STL" />
+    <mesh name="l_f_2link.STL" file="../meshes/l_f_2link.STL" />
+    <mesh name="l_b_link.STL" file="../meshes/l_b_link.STL" />
+    <mesh name="l_b_1link.STL" file="../meshes/l_b_1link.STL" />
+    <mesh name="l_b_2link.STL" file="../meshes/l_b_2link.STL" />
+    <mesh name="r_f_link.STL" file="../meshes/r_f_link.STL" />
+    <mesh name="r_f_1link.STL" file="../meshes/r_f_1link.STL" />
+    <mesh name="r_f_2link.STL" file="../meshes/r_f_2link.STL" />
+    <mesh name="r_b_link.STL" file="../meshes/r_b_link.STL" />
+    <mesh name="r_b_1link.STL" file="../meshes/r_b_1link.STL" />
+    <mesh name="r_b_2link.STL" file="../meshes/r_b_2link.STL" />
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="10 10 0.1" rgba="0.95 0.95 0.95 1"/>
+
+    <body name="base_link" pos="0.0 0.0 0.22" quat="1 0 0 0">
+      <freejoint name="floating_base" />
+      <geom type="mesh" mesh="base_link.STL" material="body_material" />
+
+      <!-- 左前腿 -->
+      <body name="l_f_link" pos="0.0643 0.0375 0.01495" quat="1.0 0.0 0.0 0.0">
+        <joint name="l_f_joint" type="hinge" ref="0.0" range="-1.57 1.57" axis="1 0 0" />
+        <inertial pos="0.029689 0.0062796 6.3546E-05" quat="1.0 0.0 0.0 0.0" mass="0.09703" diaginertia="3.0876e-05 3.4106e-05 2.3976e-05" />
+        <geom type="mesh" mesh="l_f_link.STL" material="body_material" />
+
+        <body name="l_f_1link" pos="0.02055 0.0323 -0.01" quat="0.8138784566625339 0.0 -0.5810351605373051 0.0">
+          <joint name="l_f_1link" type="hinge" ref="0.0" range="-1.57 1.57" axis="0 1 0" />
+          <inertial pos="-0.037087 6.5093E-06 -0.012413" quat="1.0 0.0 0.0 0.0" mass="0.018878" diaginertia="1.6778e-06 1.1567e-05 1.0117e-05" />
+          <geom type="mesh" mesh="l_f_1link.STL" material="body_material" />
+
+          <body name="l_f_2link" pos="-0.085347 0 -0.028565" quat="0.6448265472400012 0.0 0.7643289370255051 0.0">
+            <joint name="l_f_2link" type="hinge" ref="0.0" range="-3.14 0" axis="0 1 0" />
+            <inertial pos="0.025876 0.00021878 -0.045422" quat="1.0 0.0 0.0 0.0" mass="0.019798" diaginertia="2.1203e-05 3.0541e-05 1.0141e-05" />
+            <geom type="mesh" mesh="l_f_2link.STL" material="body_material" />
+          </body>
+        </body>
+      </body>
+
+      <!-- 左后腿 -->
+      <body name="l_b_link" pos="-0.0643 0.0375 0.01495" quat="1.0 0.0 0.0 0.0">
+        <joint name="l_b_joint" type="hinge" ref="0.0" range="-1.57 1.57" axis="1 0 0" />
+        <inertial pos="-0.029142 0.0062906 6.3684E-05" quat="1.0 0.0 0.0 0.0" mass="0.096818" diaginertia="3.0834e-05 3.3971e-05 2.3844e-05" />
+        <geom type="mesh" mesh="l_b_link.STL" material="body_material" />
+
+        <body name="l_b_1link" pos="-0.04045 0.0323 -0.01" quat="0.9210609940028851 0.0 -0.3894183423086505 0.0">
+          <joint name="l_b_1link" type="hinge" ref="0.0" range="-1.57 1.57" axis="0 1 0" />
+          <inertial pos="-0.026879 6.5079E-06 -0.028408" quat="1.0 0.0 0.0 0.0" mass="0.018878" diaginertia="6.1897e-06 1.1567e-05 5.6053e-06" />
+          <geom type="mesh" mesh="l_b_1link.STL" material="body_material" />
+
+          <body name="l_b_2link" pos="-0.061855 0 -0.065375" quat="0.7002847660410397 0.0 0.7138636049350369 0.0">
+            <joint name="l_b_2link" type="hinge" ref="0.0" range="-3.14 0" axis="0 1 0" />
+            <inertial pos="0.037301 0.00021879 -0.036625" quat="1.0 0.0 0.0 0.0" mass="0.019798" diaginertia="1.312e-05 3.0541e-05 1.8224e-05" />
+            <geom type="mesh" mesh="l_b_2link.STL" material="body_material" />
+          </body>
+        </body>
+      </body>
+
+      <!-- 右前腿 -->
+      <body name="r_f_link" pos="0.0643 -0.0375 0.01495" quat="1.0 0.0 0.0 0.0">
+        <joint name="r_f_joint" type="hinge" ref="0.0" range="-1.57 1.57" axis="1 0 0" />
+        <inertial pos="0.029689 -0.0062796 6.3542E-05" quat="1.0 0.0 0.0 0.0" mass="0.09703" diaginertia="3.0876e-05 3.4106e-05 2.3976e-05" />
+        <geom type="mesh" mesh="r_f_link.STL" material="body_material" />
+
+        <body name="r_f_1link" pos="0.02055 -0.0323 -0.01" quat="0.9872272833756269 0.0 -0.15931820661424598 0.0">
+          <joint name="r_f_1link" type="hinge" ref="0.0" range="-1.57 1.57" axis="0 1 0" />
+          <inertial pos="-0.013037 -9.6442E-06 -0.036954" quat="1.0 0.0 0.0 0.0" mass="0.018883" diaginertia="1.0042e-05 1.1601e-05 1.7862e-06" />
+          <geom type="mesh" mesh="r_f_1link.STL" material="body_material" />
+
+          <body name="r_f_2link" pos="-0.029943 0 -0.084873" quat="0.8846749491085283 0.0 0.4662083594486727 0.0">
+            <joint name="r_f_2link" type="hinge" ref="0.0" range="-3.14 0" axis="0 1 0" />
+            <inertial pos="0.032289 -0.00021871 -0.041112" quat="1.0 0.0 0.0 0.0" mass="0.019798" diaginertia="1.6937e-05 3.0541e-05 1.4407e-05" />
+            <geom type="mesh" mesh="r_f_2link.STL" material="body_material" />
+          </body>
+        </body>
+      </body>
+
+      <!-- 右后腿 -->
+      <body name="r_b_link" pos="-0.0643 -0.0375 0.01495" quat="1.0 0.0 0.0 0.0">
+        <joint name="r_b_joint" type="hinge" ref="0.0" range="-1.57 1.57" axis="1 0 0" />
+        <inertial pos="-0.029142 -0.0062906 6.3681E-05" quat="1.0 0.0 0.0 0.0" mass="0.096818" diaginertia="3.0834e-05 3.3971e-05 2.3844e-05" />
+        <geom type="mesh" mesh="r_b_link.STL" material="body_material" />
+
+        <body name="r_b_1link" pos="-0.04045 -0.0323 -0.01" quat="0.8551272907805307 0.0 -0.518418090504517 0.0">
+          <joint name="r_b_1link" type="hinge" ref="0.0" range="-1.57 1.57" axis="0 1 0" />
+          <inertial pos="-0.034071 -9.6422E-06 -0.019359" quat="1.0 0.0 0.0 0.0" mass="0.018883" diaginertia="3.2003e-06 1.1601e-05 8.6279e-06" />
+          <geom type="mesh" mesh="r_b_1link.STL" material="body_material" />
+
+          <body name="r_b_2link" pos="-0.078251 0 -0.044462" quat="0.5318607213743555 0.0 0.8468318446180152 0.0">
+            <joint name="r_b_2link" type="hinge" ref="0.0" range="-3.14 0" axis="0 1 0" />
+            <inertial pos="0.042882 -0.00021873 -0.029898" quat="1.0 0.0 0.0 0.0" mass="0.019798" diaginertia="8.4467e-06 3.0541e-05 2.2897e-05" />
+            <geom type="mesh" mesh="r_b_2link.STL" material="body_material" />
+          </body>
+        </body>
+      </body>
+
+      <site name="base_link_site" pos="0 0 0" quat="1 0 0 0" />
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="l_f_joint_ctrl" joint="l_f_joint" kp="30" forcerange="-18 18"/>
+    <position name="l_f_1link_ctrl" joint="l_f_1link" kp="30" forcerange="-18 18"/>
+    <position name="l_f_2link_ctrl" joint="l_f_2link" kp="30" forcerange="-18 18"/>
+    <position name="l_b_joint_ctrl" joint="l_b_joint" kp="30" forcerange="-18 18"/>
+    <position name="l_b_1link_ctrl" joint="l_b_1link" kp="30" forcerange="-18 18"/>
+    <position name="l_b_2link_ctrl" joint="l_b_2link" kp="30" forcerange="-18 18"/>
+    <position name="r_f_joint_ctrl" joint="r_f_joint" kp="30" forcerange="-18 18"/>
+    <position name="r_f_1link_ctrl" joint="r_f_1link" kp="30" forcerange="-18 18"/>
+    <position name="r_f_2link_ctrl" joint="r_f_2link" kp="30" forcerange="-18 18"/>
+    <position name="r_b_joint_ctrl" joint="r_b_joint" kp="30" forcerange="-18 18"/>
+    <position name="r_b_1link_ctrl" joint="r_b_1link" kp="30" forcerange="-18 18"/>
+    <position name="r_b_2link_ctrl" joint="r_b_2link" kp="30" forcerange="-18 18"/>
+  </actuator>
+
+  <contact>
+    <exclude body1="base_link" body2="l_f_link" />
+    <exclude body1="l_f_link" body2="l_f_1link" />
+    <exclude body1="l_f_1link" body2="l_f_2link" />
+    <exclude body1="base_link" body2="l_b_link" />
+    <exclude body1="l_b_link" body2="l_b_1link" />
+    <exclude body1="l_b_1link" body2="l_b_2link" />
+    <exclude body1="base_link" body2="r_f_link" />
+    <exclude body1="r_f_link" body2="r_f_1link" />
+    <exclude body1="r_f_1link" body2="r_f_2link" />
+    <exclude body1="base_link" body2="r_b_link" />
+    <exclude body1="r_b_link" body2="r_b_1link" />
+    <exclude body1="r_b_1link" body2="r_b_2link" />
+  </contact>
+
+</mujoco>

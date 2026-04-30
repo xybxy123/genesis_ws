@@ -1,0 +1,23 @@
+/**:
+  ros__parameters:
+    links_map:
+      base: base_link
+      left_front:
+        - l_f_link
+        - l_f_1link
+        - l_f_2link
+
+      right_front:
+        - r_f_link
+        - r_f_1link
+        - r_f_2link
+
+      left_hind:
+        - l_b_link
+        - l_b_1link
+        - l_b_2link
+
+      right_hind:
+        - r_b_link
+        - r_b_1link
+        - r_b_2link

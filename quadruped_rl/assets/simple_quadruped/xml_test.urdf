@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+<robot name="simple_quadruped">
+  <material name="flat_cube_mat">
+    <color rgba="0.8 0.4 0.2 1.0"/>
+  </material>
+  <material name="head_mat">
+    <color rgba="0.6 0.4 0.2 1.0"/>
+  </material>
+  <material name="link_mat">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+  <material name="link2_mat">
+    <color rgba="0.7 0.7 0.7 1.0"/>
+  </material>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.2"/>
+      <inertia ixx="0.00042417" ixy="0" ixz="0" iyy="0.00067267" iyz="0" izz="0.00090617"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.28 0.15 0.04"/>
+      </geometry>
+      <material name="flat_cube_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.28 0.15 0.04"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="dog_head_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.05"/>
+      <inertia ixx="0.00005333" ixy="0" ixz="0" iyy="0.00005333" iyz="0" izz="0.00005333"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <box size="0.08 0.08 0.08"/>
+      </geometry>
+      <material name="head_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 1.5708 0"/>
+      <geometry>
+        <box size="0.08 0.08 0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="dog_head_fixed" type="fixed">
+    <parent link="base_link"/>
+    <child link="dog_head_link"/>
+    <origin xyz="0.14 0 0.06" rpy="0 0 0"/>
+  </joint>
+
+  <link name="h_back_right_link">
+    <inertial>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00008437" ixy="0" ixz="0" iyy="0.00008437" iyz="0" izz="0.00001125"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+      <material name="link_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="l_back_right_link">
+    <inertial>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00009517" ixy="0" ixz="0" iyy="0.00009517" iyz="0" izz="0.00000500"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+      <material name="link2_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="h_back_right" type="revolute">
+    <parent link="base_link"/>
+    <child link="h_back_right_link"/>
+    <origin xyz="-0.14 -0.075 -0.035" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <joint name="l_back_right" type="revolute">
+    <parent link="h_back_right_link"/>
+    <child link="l_back_right_link"/>
+    <origin xyz="0 0 -0.105" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.1416" upper="0" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <link name="h_front_right_link">
+    <inertial>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00008437" ixy="0" ixz="0" iyy="0.00008437" iyz="0" izz="0.00001125"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+      <material name="link_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="l_front_right_link">
+    <inertial>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00009517" ixy="0" ixz="0" iyy="0.00009517" iyz="0" izz="0.00000500"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+      <material name="link2_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="h_front_right" type="revolute">
+    <parent link="base_link"/>
+    <child link="h_front_right_link"/>
+    <origin xyz="0.14 -0.075 -0.035" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <joint name="l_front_right" type="revolute">
+    <parent link="h_front_right_link"/>
+    <child link="l_front_right_link"/>
+    <origin xyz="0 0 -0.105" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.1416" upper="0" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <link name="h_back_left_link">
+    <inertial>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00008437" ixy="0" ixz="0" iyy="0.00008437" iyz="0" izz="0.00001125"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+      <material name="link_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="l_back_left_link">
+    <inertial>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00009517" ixy="0" ixz="0" iyy="0.00009517" iyz="0" izz="0.00000500"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+      <material name="link2_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="h_back_left" type="revolute">
+    <parent link="base_link"/>
+    <child link="h_back_left_link"/>
+    <origin xyz="-0.14 0.075 -0.035" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <joint name="l_back_left" type="revolute">
+    <parent link="h_back_left_link"/>
+    <child link="l_back_left_link"/>
+    <origin xyz="0 0 -0.105" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.1416" upper="0" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <link name="h_front_left_link">
+    <inertial>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00008437" ixy="0" ixz="0" iyy="0.00008437" iyz="0" izz="0.00001125"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+      <material name="link_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.045" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.015" length="0.09"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="l_front_left_link">
+    <inertial>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.00009517" ixy="0" ixz="0" iyy="0.00009517" iyz="0" izz="0.00000500"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+      <material name="link2_mat"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.06315" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.1063"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="h_front_left" type="revolute">
+    <parent link="base_link"/>
+    <child link="h_front_left_link"/>
+    <origin xyz="0.14 0.075 -0.035" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+
+  <joint name="l_front_left" type="revolute">
+    <parent link="h_front_left_link"/>
+    <child link="l_front_left_link"/>
+    <origin xyz="0 0 -0.105" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.1416" upper="0" effort="100" velocity="10"/>
+    <dynamics damping="0.1" friction="0.01"/>
+  </joint>
+</robot>
