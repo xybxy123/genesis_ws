@@ -24,7 +24,7 @@
   </asset>
 
   <worldbody>
-    <geom name="floor" type="plane" size="10 10 0.1" rgba="0.95 0.95 0.95 1"/>
+    <!-- <geom name="floor" type="plane" size="10 10 0.1" rgba="1 1 1 1"/> -->
 
     <body name="base_link" pos="0.0 0.0 0.22" quat="1 0 0 0">
       <freejoint name="floating_base" />
