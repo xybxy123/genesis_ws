@@ -26,6 +26,7 @@ scene = gs.Scene(
         camera_lookat=(0.0, 0.0, 0.5),
         camera_fov=45,
         max_FPS=60,
+        enable_default_keybinds=True,  # 开启所有默认快捷键
     ),
     renderer=gs.renderers.Rasterizer(),
 )
